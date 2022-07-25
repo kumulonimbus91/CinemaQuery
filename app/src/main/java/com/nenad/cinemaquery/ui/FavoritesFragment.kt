@@ -45,36 +45,6 @@ class FavoritesFragment : Fragment() {
         requireActivity().findViewById<ViewGroup>(R.id.cl_view).visibility = View.GONE
     }
 
-//    override fun onPause() {
-//        super.onPause()
-//        requireActivity().findViewById<ViewGroup>(R.id.cl_view).visibility = View.VISIBLE
-//    }
-//
-//    override fun onResume() {
-//        super.onResume()
-//        requireActivity().findViewById<ViewGroup>(R.id.cl_view).visibility = View.GONE
-//    }
-//
-//    override fun onAttach(context: Context) {
-//        super.onAttach(context)
-//        requireActivity().findViewById<ViewGroup>(R.id.cl_view).visibility = View.GONE
-//    }
-//
-//    override fun onDetach() {
-//        super.onDetach()
-//        requireActivity().findViewById<ViewGroup>(R.id.cl_view).visibility = View.VISIBLE
-//    }
-//
-//    override fun onDestroyView() {
-//        super.onDestroyView()
-//        requireActivity().findViewById<ViewGroup>(R.id.cl_view).visibility = View.VISIBLE
-//    }
-//
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        requireActivity().findViewById<ViewGroup>(R.id.cl_view).visibility = View.VISIBLE
-//    }
-
     fun setUpRV() {
         moviesAdapter = MoviesAdapter(this)
         mBinding.rvSaved.apply {

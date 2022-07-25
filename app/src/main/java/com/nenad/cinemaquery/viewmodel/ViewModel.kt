@@ -70,26 +70,6 @@ class ViewModel @Inject constructor( val repository: Repository, application: Ap
         dateSearch.postValue(handleSearchResponseByDate(response))
     }
 
-
-    fun searchMovieFromET(editText: EditText) {
-        var job: Job? = null
-        editText.addTextChangedListener { editable ->
-            job?.cancel()
-            job = MainScope().launch {
-                delay(Constants.SEARCH_MOVIES_TIME_DELAY)
-                editable?.let {
-                    if (editable.toString().isNotEmpty()) {
-                        searchMovie(editable.toString())
-                    }
-                }
-            }
-
-
-
-
-        }
-    }
-
     private fun handlePopularResponse(response: Response<Movies>) :
             Resource<Movies> {
         if (response.isSuccessful) {
@@ -107,7 +87,7 @@ class ViewModel @Inject constructor( val repository: Repository, application: Ap
                 return Resource.Success(popularResponse ?: resultResponse!!) //if its first response return resultresponse instead
             }
         }
-        return com.nenad.cinemaquery.data.remote.Resource.Error(response.message())
+        return Resource.Error(response.message())
 
 
     }

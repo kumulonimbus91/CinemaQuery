@@ -1,6 +1,5 @@
 package com.nenad.cinemaquery.ui
 
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,15 +8,18 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nenad.cinemaquery.R
 import com.nenad.cinemaquery.adapter.MoviesAdapter
 import com.nenad.cinemaquery.databinding.FragmentFavoritesBinding
-import com.nenad.cinemaquery.viewmodel.ViewModel
+import com.nenad.cinemaquery.viewmodels.DetailsViewModel
+import com.nenad.cinemaquery.viewmodels.PopularViewModel
 class FavoritesFragment : Fragment() {
     lateinit var mBinding: FragmentFavoritesBinding
     lateinit var moviesAdapter: MoviesAdapter
-    val viewModel: ViewModel by activityViewModels()
+    val viewModel: PopularViewModel by activityViewModels()
+    lateinit var detailsViewModel: DetailsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +32,10 @@ class FavoritesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_favorites, container, false)
+
+        detailsViewModel = ViewModelProvider(this)[DetailsViewModel::class.java]
+
+
         setUpRV()
         requireActivity().findViewById<ViewGroup>(R.id.cl_view).visibility = View.GONE
 
@@ -38,7 +44,7 @@ class FavoritesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.movies.observe(viewLifecycleOwner, Observer {
+        detailsViewModel.movies.observe(viewLifecycleOwner, Observer {
             moviesAdapter.differ.submitList(it)
 
         })

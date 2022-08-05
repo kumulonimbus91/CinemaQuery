@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.nenad.cinemaquery.viewmodel.ViewModel" />
+            type="com.nenad.cinemaquery.viewmodels.PopularViewModel" />
 
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout

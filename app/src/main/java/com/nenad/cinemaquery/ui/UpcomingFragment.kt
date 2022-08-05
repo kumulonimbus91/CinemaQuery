@@ -2,14 +2,13 @@ package com.nenad.cinemaquery.ui
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,14 +18,16 @@ import com.nenad.cinemaquery.adapter.MoviesAdapter
 import com.nenad.cinemaquery.data.remote.Resource
 import com.nenad.cinemaquery.databinding.FragmentIntheatresBinding
 import com.nenad.cinemaquery.util.Constants
-import com.nenad.cinemaquery.viewmodel.ViewModel
+import com.nenad.cinemaquery.viewmodels.UpcomingViewModel
 import kotlinx.coroutines.launch
 
-class IntheatresFragment : BaseFragment() {
+class UpcomingFragment : BaseFragment() {
 
     lateinit var mBinding: FragmentIntheatresBinding
-    val viewModel: ViewModel by activityViewModels()
     lateinit var moviesAdapter: MoviesAdapter
+    lateinit var upcomingViewModel: UpcomingViewModel
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,6 +35,7 @@ class IntheatresFragment : BaseFragment() {
     ): View {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_intheatres, container, false)
 
+        upcomingViewModel = ViewModelProvider(this)[UpcomingViewModel::class.java]
 
         return mBinding.root
     }
@@ -41,21 +43,21 @@ class IntheatresFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpRV()
-        viewModel.getUpcomingMovies()
+        upcomingViewModel.getUpcomingMovies()
         requireActivity().findViewById<ViewGroup>(R.id.cl_view).visibility = View.VISIBLE
         upcomingMovies()
     }
 
     fun upcomingMovies() {
         lifecycleScope.launch {
-            viewModel.resultUpcoming.observe(viewLifecycleOwner, Observer { response ->
+            upcomingViewModel.resultUpcoming.observe(viewLifecycleOwner, Observer { response ->
                 when(response) {
                     is Resource.Success<*> -> {
                         hideProgressBar(mBinding.progressbar)
                         response.data.let {
                             moviesAdapter.differ.submitList(it?.results?.toList())
                             val totalPages = it!!.totalResults / Constants.QUERY_PAGE_SIZE + 2
-                            isLastPage = viewModel.upcomingPageNum == totalPages
+                            isLastPage = upcomingViewModel.upcomingPageNum == totalPages
                             if (isLastPage) {
                                 mBinding.rvUpcoming.setPadding(0,0,0,0)
                             }
@@ -97,7 +99,7 @@ class IntheatresFragment : BaseFragment() {
             val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBeginning &&
                     isTotalMoreThanVisible && isScrolling
             if(shouldPaginate) {
-                viewModel.getUpcomingMovies()
+                upcomingViewModel.getUpcomingMovies()
                 isScrolling = false
             }
         }
@@ -115,11 +117,11 @@ class IntheatresFragment : BaseFragment() {
         mBinding.rvUpcoming.apply {
             adapter = moviesAdapter
             layoutManager = LinearLayoutManager(activity)
-            addOnScrollListener(this@IntheatresFragment.scrollListener)
+            addOnScrollListener(this@UpcomingFragment.scrollListener)
 
         }
         moviesAdapter.setOnClickListener {
-            val action = IntheatresFragmentDirections.actionIntheatresFragmentToDetailsFragment(it)
+            val action = UpcomingFragmentDirections.actionIntheatresFragmentToDetailsFragment(it)
             findNavController().navigate(action)
         }
     }

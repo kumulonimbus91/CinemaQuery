@@ -8,8 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,12 +19,12 @@ import com.nenad.cinemaquery.adapter.MoviesAdapter
 import com.nenad.cinemaquery.databinding.FragmentHomeBinding
 import com.nenad.cinemaquery.util.Constants
 import com.nenad.cinemaquery.util.Constants.QUERY_PAGE_SIZE
-import com.nenad.cinemaquery.viewmodel.ViewModel
+import com.nenad.cinemaquery.viewmodels.PopularViewModel
 import kotlinx.coroutines.launch
 
-class HomeFragment : Fragment() {
+class PopularFragment : Fragment() {
     private lateinit var mBinding: FragmentHomeBinding
-    val viewModel: ViewModel by activityViewModels()
+    lateinit var popularViewModel: PopularViewModel
     lateinit var moviesAdapter: MoviesAdapter
 
     override fun onCreateView(
@@ -32,6 +32,9 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+        popularViewModel = ViewModelProvider(this)[PopularViewModel::class.java]
+
+
         mBinding.lifecycleOwner = this
         return mBinding.root
     }
@@ -48,14 +51,14 @@ class HomeFragment : Fragment() {
     }
     fun popularMovies() {
         lifecycleScope.launch {
-            viewModel.resultPopular.observe(viewLifecycleOwner, Observer { response ->
+            popularViewModel.resultPopular.observe(viewLifecycleOwner, Observer { response ->
                 when(response) {
                     is com.nenad.cinemaquery.data.remote.Resource.Success<*> -> {
                         hideProgressBar()
                         response.data.let {
                             moviesAdapter.differ.submitList(it?.results?.toList())
                             val totalPages = it!!.totalResults / QUERY_PAGE_SIZE + 2 //the last page will always be empty
-                            isLastPage = viewModel.popularPageNum == totalPages
+                            isLastPage = popularViewModel.popularPageNum == totalPages
                             if (isLastPage) {
                                 mBinding.rvPopular.setPadding(0,0,0,0)
                             }
@@ -84,14 +87,14 @@ class HomeFragment : Fragment() {
         mBinding.rvPopular.apply {
             adapter = moviesAdapter
             layoutManager = LinearLayoutManager(activity)
-            addOnScrollListener(this@HomeFragment.scrollListener)
+            addOnScrollListener(this@PopularFragment.scrollListener)
 
         }
 
     }
     fun clickListeners() {
         moviesAdapter.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(it)
+            val action = PopularFragmentDirections.actionHomeFragmentToDetailsFragment(it)
             findNavController().navigate(action)
         }
     }
@@ -115,7 +118,7 @@ class HomeFragment : Fragment() {
             val shouldPaginate = isNotLoadingAndNotLastPage && isAtLastItem && isNotAtBeginning &&
                     isTotalMoreThanVisible && isScrolling
             if(shouldPaginate) {
-                viewModel.getPopularMovies()
+                popularViewModel.getPopularMovies()
                 isScrolling = false
             }
         }

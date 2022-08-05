@@ -9,14 +9,14 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.nenad.cinemaquery.R
 import com.nenad.cinemaquery.databinding.ActivityMainBinding
-import com.nenad.cinemaquery.viewmodel.ViewModel
+import com.nenad.cinemaquery.viewmodels.PopularViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityMainBinding
     private lateinit var mNavController: NavController
-    lateinit var viewModel: ViewModel
+    lateinit var viewModel: PopularViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(mBinding.root)
         setOnClickListeners()
 
-        viewModel = ViewModelProvider(this)[ViewModel::class.java]
+        viewModel = ViewModelProvider(this)[PopularViewModel::class.java]
 
         supportActionBar?.hide()
 

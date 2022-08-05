@@ -8,15 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nenad.cinemaquery.R
 import com.nenad.cinemaquery.adapter.MoviesAdapter
 import com.nenad.cinemaquery.databinding.FragmentSearchBinding
 import com.nenad.cinemaquery.util.Constants.SEARCH_MOVIES_TIME_DELAY
-import com.nenad.cinemaquery.viewmodel.ViewModel
+import com.nenad.cinemaquery.viewmodels.SearchByDateViewModel
+import com.nenad.cinemaquery.viewmodels.SearchByQueryViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
@@ -28,7 +28,10 @@ import java.util.*
 class SearchFragment : BaseFragment() {
     lateinit var mBinding: FragmentSearchBinding
     lateinit var moviesAdapter: MoviesAdapter
-    val viewModel: ViewModel by activityViewModels()
+    lateinit var searchByQueryViewModel: SearchByQueryViewModel
+    lateinit var searchByDateViewModel: SearchByDateViewModel
+
+
 
 
     override fun onCreateView(
@@ -36,6 +39,11 @@ class SearchFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_search, container, false)
+        searchByQueryViewModel = ViewModelProvider(this)[SearchByQueryViewModel::class.java]
+        searchByDateViewModel = ViewModelProvider(this)[SearchByDateViewModel::class.java]
+
+
+
         setUpRV()
         return mBinding.root
     }
@@ -50,14 +58,14 @@ class SearchFragment : BaseFragment() {
                 delay(SEARCH_MOVIES_TIME_DELAY)
                 editable?.let {
                     if (editable.toString().isNotEmpty()) {
-                        viewModel.searchMovie(editable.toString())
+                        searchByQueryViewModel.searchMovie(editable.toString())
                     }
                 }
             }
         }
         mBinding.btnSearch.setOnClickListener {
 
-            viewModel.resultSearch.observe(
+            searchByQueryViewModel.resultSearch.observe(
                 viewLifecycleOwner,
                 androidx.lifecycle.Observer { response ->
                     when (response) {
@@ -94,8 +102,8 @@ class SearchFragment : BaseFragment() {
             myCalendar.set(Calendar.MONTH, month)
             myCalendar.set(Calendar.DAY_OF_MONTH, dayofmonth)
 
-            viewModel.searchMovieByDate(formatDate(myCalendar))
-            viewModel.dateSearch.observe(
+            searchByDateViewModel.searchMovieByDate(formatDate(myCalendar))
+            searchByDateViewModel.dateSearch.observe(
                 viewLifecycleOwner,
                 androidx.lifecycle.Observer { response ->
                     when (response) {

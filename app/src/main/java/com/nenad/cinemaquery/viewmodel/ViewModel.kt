@@ -47,7 +47,7 @@ class ViewModel @Inject constructor( val repository: Repository, application: Ap
     }
 
     fun getPopularMovies() = viewModelScope.launch {
-        resultPopular.postValue(com.nenad.cinemaquery.data.remote.Resource.Loading())
+        resultPopular.postValue(Resource.Loading())
         val response = repository.remote.getPopularMovies(popularPageNum)
         resultPopular.postValue(handlePopularResponse(response))
     }
@@ -61,7 +61,7 @@ class ViewModel @Inject constructor( val repository: Repository, application: Ap
 
     fun searchMovie(query: String) = viewModelScope.launch {
         resultSearch.postValue(Resource.Loading())
-        val response = repository.remote.searchMovie(query)
+        val response = repository.remote.searchMovie(query, searchPageNum)
         resultSearch.postValue(handleSearchResponse(response))
     }
     fun searchMovieByDate(releaseDate: String) = viewModelScope.launch {
@@ -73,7 +73,7 @@ class ViewModel @Inject constructor( val repository: Repository, application: Ap
     private fun handlePopularResponse(response: Response<Movies>) :
             Resource<Movies> {
         if (response.isSuccessful) {
-            popularPageNum++
+            popularPageNum++// 
             response.body().let { resultResponse ->
                 if (popularResponse == null) {
                     popularResponse = resultResponse
@@ -93,9 +93,9 @@ class ViewModel @Inject constructor( val repository: Repository, application: Ap
     }
 
 
-    private fun handleUpcomingResponse(response: retrofit2.Response <Movies>) : com.nenad.cinemaquery.data.remote.Resource<Movies> {
+    private fun handleUpcomingResponse(response: Response <Movies>) : Resource<Movies> {
         if (response.isSuccessful) {
-            upcomingPageNum++
+            upcomingPageNum++ //load next page
             response.body().let { resultResponse ->
                if(upcomingResponse == null) {
                    upcomingResponse = resultResponse
@@ -110,7 +110,7 @@ class ViewModel @Inject constructor( val repository: Repository, application: Ap
 
 
 
-                return Resource.Success(upcomingResponse ?: resultResponse!!)
+                return Resource.Success(upcomingResponse ?: resultResponse!!) //if upcoming is null return resultResponse
             }
         }
         return Resource.Error(response.message())
@@ -177,7 +177,6 @@ class ViewModel @Inject constructor( val repository: Repository, application: Ap
     }
 
     val movies: LiveData<List<Result>> = repository.local.dao.getAllMovies().asLiveData()
-
 
 
 

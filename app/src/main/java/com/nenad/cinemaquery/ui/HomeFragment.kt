@@ -54,7 +54,7 @@ class HomeFragment : Fragment() {
                         hideProgressBar()
                         response.data.let {
                             moviesAdapter.differ.submitList(it?.results?.toList())
-                            val totalPages = it!!.totalResults / QUERY_PAGE_SIZE + 2
+                            val totalPages = it!!.totalResults / QUERY_PAGE_SIZE + 2 //the last page will always be empty
                             isLastPage = viewModel.popularPageNum == totalPages
                             if (isLastPage) {
                                 mBinding.rvPopular.setPadding(0,0,0,0)

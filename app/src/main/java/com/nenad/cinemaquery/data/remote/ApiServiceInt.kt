@@ -19,16 +19,16 @@ import java.net.URLEncoder
 interface ApiServiceInt {
 
     @GET("/3/movie/popular/")
-    suspend fun getPopularMovies(@Query("api_key") apiKey: String = API_KEY,    @Query("page")
-    pageNumber: Int = 1): Response<Movies>
+    suspend fun getPopularMovies(@Query("api_key") apiKey: String = API_KEY, @Query("page")
+    pageNumber: Int): Response<Movies>
 
     @GET("/3/movie/upcoming")
     suspend fun getUpcomingMovies(@Query("api_key") apiKey: String = API_KEY,@Query("page")
-    pageNumber: Int = 1): Response<Movies>
+    pageNumber: Int): Response<Movies>
 
     @GET("/3/search/movie")
     suspend fun searchMovie(@Query("api_key") apiKey: String = API_KEY, @Query("query") query: String, @Query("page")
-    pageNumber: Int = 1): Response<Movies>
+    pageNumber: Int): Response<Movies>
 
     @GET("/3/discover/movie")
     suspend fun searchMovieByDate(@Query("api_key") apiKey: String = API_KEY, @Query("release_date.gte") releaseDate: String): Response<Movies>

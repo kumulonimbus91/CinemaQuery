@@ -129,8 +129,6 @@ class SearchFragment : BaseFragment() {
 
 
     }
-
-
     fun setUpRV() {
         moviesAdapter = MoviesAdapter(this)
         mBinding.rvMovies.apply {

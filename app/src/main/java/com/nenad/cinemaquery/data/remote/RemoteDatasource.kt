@@ -11,13 +11,13 @@ class RemoteDatasource @Inject constructor() {
 
 
     suspend fun getPopularMovies(pageNumber: Int): Response<Movies> {
-        return RetrofitInstance.api.getPopularMovies()
+        return RetrofitInstance.api.getPopularMovies(Constants.API_KEY, pageNumber)
     }
     suspend fun getUpcomingMovies(pageNumber: Int): Response<Movies> {
-        return RetrofitInstance.api.getUpcomingMovies()
+        return RetrofitInstance.api.getUpcomingMovies(Constants.API_KEY, pageNumber)
     }
-    suspend fun searchMovie(query: String): Response<Movies> {
-        return RetrofitInstance.api.searchMovie(Constants.API_KEY, query)
+    suspend fun searchMovie(query: String, pageNumber: Int): Response<Movies> {
+        return RetrofitInstance.api.searchMovie(Constants.API_KEY, query, pageNumber)
     }
 
     suspend fun searchMovieByDate(releaseDate: String): Response<Movies> {

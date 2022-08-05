@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MoviesDao {
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(movie: Result): Long
 

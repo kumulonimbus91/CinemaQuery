@@ -15,11 +15,12 @@ import com.nenad.cinemaquery.adapter.MoviesAdapter
 import com.nenad.cinemaquery.databinding.FragmentFavoritesBinding
 import com.nenad.cinemaquery.viewmodels.DetailsViewModel
 import com.nenad.cinemaquery.viewmodels.PopularViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FavoritesFragment : Fragment() {
     lateinit var mBinding: FragmentFavoritesBinding
     lateinit var moviesAdapter: MoviesAdapter
-    val viewModel: PopularViewModel by activityViewModels()
     lateinit var detailsViewModel: DetailsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {

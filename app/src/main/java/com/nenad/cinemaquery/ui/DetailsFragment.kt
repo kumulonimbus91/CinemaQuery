@@ -14,8 +14,9 @@ import com.nenad.cinemaquery.R
 import com.nenad.cinemaquery.databinding.FragmentDetailsBinding
 import com.nenad.cinemaquery.util.Constants.imgPath
 import com.nenad.cinemaquery.viewmodels.DetailsViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class DetailsFragment : Fragment() {
     lateinit var mBinding: FragmentDetailsBinding
     lateinit var detailsViewModel: DetailsViewModel

@@ -19,8 +19,9 @@ import com.nenad.cinemaquery.data.remote.Resource
 import com.nenad.cinemaquery.databinding.FragmentIntheatresBinding
 import com.nenad.cinemaquery.util.Constants
 import com.nenad.cinemaquery.viewmodels.UpcomingViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-
+@AndroidEntryPoint
 class UpcomingFragment : BaseFragment() {
 
     lateinit var mBinding: FragmentIntheatresBinding

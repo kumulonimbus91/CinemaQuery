@@ -15,6 +15,7 @@ import com.nenad.cinemaquery.adapter.MoviesAdapter
 import com.nenad.cinemaquery.databinding.FragmentFavoritesBinding
 import com.nenad.cinemaquery.viewmodels.DetailsViewModel
 import com.nenad.cinemaquery.viewmodels.PopularViewModel
+
 class FavoritesFragment : Fragment() {
     lateinit var mBinding: FragmentFavoritesBinding
     lateinit var moviesAdapter: MoviesAdapter

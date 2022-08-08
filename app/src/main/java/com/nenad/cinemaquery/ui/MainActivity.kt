@@ -21,10 +21,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(mBinding.root)
-        setOnClickListeners()
 
-        viewModel = ViewModelProvider(this)[PopularViewModel::class.java]
+        setContentView(mBinding.root)
+
+        setOnClickListeners()
 
         supportActionBar?.hide()
 

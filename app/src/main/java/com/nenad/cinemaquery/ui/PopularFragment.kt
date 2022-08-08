@@ -20,8 +20,9 @@ import com.nenad.cinemaquery.databinding.FragmentHomeBinding
 import com.nenad.cinemaquery.util.Constants
 import com.nenad.cinemaquery.util.Constants.QUERY_PAGE_SIZE
 import com.nenad.cinemaquery.viewmodels.PopularViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-
+@AndroidEntryPoint
 class PopularFragment : Fragment() {
     private lateinit var mBinding: FragmentHomeBinding
     lateinit var popularViewModel: PopularViewModel
@@ -55,6 +56,7 @@ class PopularFragment : Fragment() {
                 when(response) {
                     is com.nenad.cinemaquery.data.remote.Resource.Success<*> -> {
                         hideProgressBar()
+                        hideErrorMessage()
                         response.data.let {
                             moviesAdapter.differ.submitList(it?.results?.toList())
                             val totalPages = it!!.totalResults / QUERY_PAGE_SIZE + 2 //the last page will always be empty
@@ -69,6 +71,7 @@ class PopularFragment : Fragment() {
                     is com.nenad.cinemaquery.data.remote.Resource.Error -> {
                         response.message.let {
                             Log.e("TAG", "ERROR")
+                            showErrorMessage(it.toString())
 
                         }
                     }
@@ -98,7 +101,7 @@ class PopularFragment : Fragment() {
             findNavController().navigate(action)
         }
     }
-
+    var isError = false
     var isLoading = false
     var isLastPage = false
     var isScrolling = false
@@ -140,6 +143,14 @@ class PopularFragment : Fragment() {
         mBinding.progressbar.visibility = View.INVISIBLE
         isLoading = false
 
+    }
+    private fun hideErrorMessage() {
+        mBinding.itemErrorMessage.visibility = View.INVISIBLE
+        isError = false
+    }
+    private fun showErrorMessage(message: String) {
+        mBinding.itemErrorMessage.visibility = View.VISIBLE
+        isError = true
     }
 
 

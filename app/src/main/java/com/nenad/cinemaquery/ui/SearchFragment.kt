@@ -17,6 +17,7 @@ import com.nenad.cinemaquery.databinding.FragmentSearchBinding
 import com.nenad.cinemaquery.util.Constants.SEARCH_MOVIES_TIME_DELAY
 import com.nenad.cinemaquery.viewmodels.SearchByDateViewModel
 import com.nenad.cinemaquery.viewmodels.SearchByQueryViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
@@ -24,7 +25,7 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
-
+@AndroidEntryPoint
 class SearchFragment : BaseFragment() {
     lateinit var mBinding: FragmentSearchBinding
     lateinit var moviesAdapter: MoviesAdapter

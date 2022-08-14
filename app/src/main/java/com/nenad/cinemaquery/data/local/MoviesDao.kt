@@ -12,8 +12,11 @@ interface MoviesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(movie: Result): Long
 
+//    @Query("SELECT * FROM movies")
+//    fun getAllMovies(): Flow<List<Result>>
+
     @Query("SELECT * FROM movies")
-    fun getAllMovies(): Flow<List<Result>>
+    fun getAllMovies(): LiveData<List<Result>>
 
     @Delete
     suspend fun deleteMovie(movie: Result)

@@ -20,7 +20,7 @@ class DetailsViewModel@Inject constructor(val repository: Repository, applicatio
 
     }
 
-    val movies: LiveData<List<Result>> = repository.local.dao.getAllMovies().asLiveData()
+    val movies: LiveData<List<Result>> = repository.local.dao.getAllMovies()
 
 
 

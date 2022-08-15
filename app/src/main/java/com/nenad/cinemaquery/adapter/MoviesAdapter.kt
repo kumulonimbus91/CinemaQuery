@@ -1,9 +1,9 @@
 package com.nenad.cinemaquery.adapter
 
+import android.provider.ContactsContract.CommonDataKinds.Note
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.marginBottom
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -63,6 +63,10 @@ class MoviesAdapter(private val fragment: Fragment) :
     override fun getItemCount(): Int {
         return differ.currentList.size
 
+    }
+
+    fun getMovieAt(position: Int): Result? {
+        return differ.currentList.get(position)
     }
 
     class ViewHolder constructor(

@@ -9,10 +9,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asFlow
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.nenad.cinemaquery.R
 import com.nenad.cinemaquery.adapter.MoviesAdapter
+import com.nenad.cinemaquery.data.model.Result
 import com.nenad.cinemaquery.databinding.FragmentFavoritesBinding
+import com.nenad.cinemaquery.util.SwipeToDeleteCallback
 import com.nenad.cinemaquery.viewmodels.DetailsViewModel
 import com.nenad.cinemaquery.viewmodels.PopularViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,6 +46,10 @@ class FavoritesFragment : Fragment() {
         setUpRV()
         requireActivity().findViewById<ViewGroup>(R.id.cl_view).visibility = View.GONE
 
+
+
+
+
         return mBinding.root
     }
 
@@ -60,6 +69,27 @@ class FavoritesFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity)
 
         }
+        val swipeToDelete = object : SwipeToDeleteCallback() {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+
+
+                moviesAdapter.getMovieAt(position)?.let {
+                    detailsViewModel.deleteMovie(it) }
+
+
+
+
+
+
+
+            }
+
+        }
+
+        val itemTouchHelper = ItemTouchHelper(swipeToDelete)
+
+        itemTouchHelper.attachToRecyclerView(mBinding.rvSaved)
 
     }
 

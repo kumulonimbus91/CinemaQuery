@@ -20,7 +20,13 @@ class DetailsViewModel@Inject constructor(val repository: Repository, applicatio
 
     }
 
-    val movies: LiveData<List<Result>> = repository.local.dao.getAllMovies()
+    fun deleteMovie(movie:Result) {
+        viewModelScope.launch {
+            repository.local.dao.deleteMovie(movie)
+        }
+    }
+
+    val movies: LiveData<MutableList<Result>> = repository.local.dao.getAllMovies()
 
 
 

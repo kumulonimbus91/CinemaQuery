@@ -112,8 +112,7 @@ class FavoritesFragment : Fragment() {
         }
 
         builder.setNegativeButton(android.R.string.no) { dialog, which ->
-            Toast.makeText(requireContext(),
-                android.R.string.no, Toast.LENGTH_SHORT).show()
+            dialog.dismiss()
         }
 
         builder.show()

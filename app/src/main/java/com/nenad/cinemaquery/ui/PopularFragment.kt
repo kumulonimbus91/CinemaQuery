@@ -35,6 +35,8 @@ class PopularFragment : Fragment() {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         popularViewModel = ViewModelProvider(this)[PopularViewModel::class.java]
 
+        requireActivity().findViewById<ViewGroup>(R.id.nav_view).visibility = View.VISIBLE
+
 
         mBinding.lifecycleOwner = this
         return mBinding.root

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:alpha="1.0"
+        android:background="@drawable/first_activity__6"
+        android:layout_height="match_parent"
+        tools:context=".ui.SplashScreenFragment">
+
+        <TextView
+            android:id="@+id/app_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/white"
+            android:alpha="2"
+            android:fillAfter="true"
+            android:singleLine="true"
+            android:fontFamily="@font/orbitron_regular"
+            android:textSize="38sp"
+            android:text="@string/app_name" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

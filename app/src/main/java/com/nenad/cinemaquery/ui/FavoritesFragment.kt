@@ -1,15 +1,18 @@
 package com.nenad.cinemaquery.ui
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asFlow
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -44,6 +47,7 @@ class FavoritesFragment : Fragment() {
 
 
         setUpRV()
+        setUpClickListener()
         requireActivity().findViewById<ViewGroup>(R.id.cl_view).visibility = View.GONE
 
 
@@ -78,11 +82,6 @@ class FavoritesFragment : Fragment() {
                     detailsViewModel.deleteMovie(it) }
 
 
-
-
-
-
-
             }
 
         }
@@ -91,6 +90,33 @@ class FavoritesFragment : Fragment() {
 
         itemTouchHelper.attachToRecyclerView(mBinding.rvSaved)
 
+    }
+
+    fun setUpClickListener() {
+        moviesAdapter.setOnClickListener {
+            val action = FavoritesFragmentDirections.actionFavoritesFragmentToDetailsFragment(it)
+            findNavController().navigate(action)
+        }
+        mBinding.deleteAllBtn.setOnClickListener {
+            alertDialog()
+        }
+    }
+
+    fun alertDialog() {
+        val builder = AlertDialog.Builder(requireActivity())
+        builder.setTitle("Delete all items")
+        builder.setMessage("Are you sure?")
+
+        builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+           detailsViewModel.deleteAllMovies()
+        }
+
+        builder.setNegativeButton(android.R.string.no) { dialog, which ->
+            Toast.makeText(requireContext(),
+                android.R.string.no, Toast.LENGTH_SHORT).show()
+        }
+
+        builder.show()
     }
 
 

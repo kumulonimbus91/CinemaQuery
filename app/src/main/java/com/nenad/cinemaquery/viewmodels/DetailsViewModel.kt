@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.room.Query
 import com.nenad.cinemaquery.data.model.Result
 import com.nenad.cinemaquery.data.repository.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,6 +26,14 @@ class DetailsViewModel@Inject constructor(val repository: Repository, applicatio
             repository.local.dao.deleteMovie(movie)
         }
     }
+
+    fun deleteAllMovies() {
+        viewModelScope.launch {
+            repository.local.dao.deleteAllMovies()
+        }
+
+    }
+
 
     val movies: LiveData<MutableList<Result>> = repository.local.dao.getAllMovies()
 
